@@ -1,19 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet'
 import { AuthenticationComponent } from 'src/app/tools/authentication/authentication.component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class AppComponent {
+export class HomeComponent implements OnInit {
   
-  title = 'Social-Media-Angular';
 
   constructor(private loginSheet: MatBottomSheet){}
+  
+  ngOnInit(): void {}
 
-  onLoginClick() {
+  onGetStartedClick() {
     this.loginSheet.open(AuthenticationComponent)
   }
 }
