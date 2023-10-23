@@ -11,13 +11,23 @@ import { HomeComponent } from './pages/home/home.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet'
 import { MatCardModule } from '@angular/material/card';
-import { AuthenticationComponent } from './tools/authentication/authentication.component'
+import { AuthenticationComponent } from './tools/authentication/authentication.component';
+import { EmailVerificationComponent } from './pages/email-verification/email-verification.component';
+import { ProfileComponent } from './tools/profile/profile.component'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatIconModule } from '@angular/material/icon';
+import { PostFeedComponent } from './pages/post-feed/post-feed.component';
+import { CreatePostComponent } from './tools/create-post/create-post.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    EmailVerificationComponent,
+    ProfileComponent,
+    PostFeedComponent,
+    CreatePostComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +35,9 @@ import { AuthenticationComponent } from './tools/authentication/authentication.c
     BrowserAnimationsModule,
     MatButtonModule,
     MatBottomSheetModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

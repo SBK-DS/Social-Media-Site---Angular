@@ -1,9 +1,22 @@
 <div id="nav-bar">
- <p>The Connecct</p>
+ <p>The Connect</p>
+ 
+ <p
+ *ngIf="loggedIn() && loggedIn() && userHasProfile"
+ >Hello, {{userDocument.publicName}}</p>
+ 
  <button
+ *ngIf="!loggedIn()"
  (click)="onLoginClick()"
  >Login</button>
+ 
+ <button
+ *ngIf="loggedIn()"
+ (click)="onLogoutClick()"
+ >Logout</button>
 </div>
 
 
 <router-outlet></router-outlet>
+
+<app-profile [show]="loggedIn() && !userHasProfile"></app-profile>
