@@ -59,13 +59,14 @@ export class PostComponent implements OnInit {
     if(this.isLiked) {
       this.isLiked = false
       this.onDisLike()
-      this.likeCount()
+      // this.likeCount()
     }
     else {
       this.isLiked = true
       this.onLikeClickSend()
-      this.likeCount()
+      // this.likeCount()
     }
+    this.likeCount()
   }
 
   likedPost() {
@@ -84,15 +85,20 @@ export class PostComponent implements OnInit {
                 this.likedId = result.docs[0].id
                 this.isLiked = true
               }
+              else {
+                this.isLiked = false
+              }
             }
           }
         )
       }}
+
   }
 
   commentedPost() {}
 
   onLikeClickSend() {
+    console.log("likedId ", this.likedId)
     this.firestore.create(
       {
         path: ["Posts", this.postData.postId, "PostLikes"],
@@ -103,6 +109,7 @@ export class PostComponent implements OnInit {
         },
         onComplete: (docId) => {
           alert(docId)
+          this.likedPost()
         }
       }
     )
