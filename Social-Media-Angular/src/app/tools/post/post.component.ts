@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, AfterViewChecked } from '@angular/core';
 import { PostData } from 'src/app/pages/post-feed/post-feed.component';
 import { FirebaseTSFirestore, Where } from 'firebasets/firebasetsFirestore/firebaseTSFirestore';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,6 +21,7 @@ export class PostComponent implements OnInit {
   isLiked: boolean = false
   likedId: string = ""
   likeCountNumber: number = 0;
+  commentCountNumber: number = 0;
   auth = new FirebaseTSAuth();
   constructor(
     private dailog: MatDialog,
@@ -31,6 +32,7 @@ export class PostComponent implements OnInit {
     this.getCreatorInfo()
     this.likedPost()
     this.likeCount()
+    this.commentedPost()
   }
 
   likeCount() {
@@ -54,6 +56,7 @@ export class PostComponent implements OnInit {
 
   onReplyClick() {
     this.dailog.open(ReplyComponent, {data: this.postData.postId})
+    this.commentedPost()
   }
   onLikeClick() {
     if(this.isLiked) {
@@ -95,7 +98,24 @@ export class PostComponent implements OnInit {
 
   }
 
-  commentedPost() {}
+  commentedPost() {
+    if (this.auth !== null && this.auth.getAuth() !== null) {
+      let currentUser = this.auth.getAuth().currentUser;
+      if (currentUser !== null) {
+        this.firestore.getCollection(
+          {
+            path: ["Posts", this.postData.postId, "PostComments"],
+            where: [
+              
+            ],
+            onComplete: (result) => {
+              console.log('Like count : ', result)
+              this.commentCountNumber = result.size
+            }
+          }
+        )
+      }}
+  }
 
   onLikeClickSend() {
     console.log("likedId ", this.likedId)
