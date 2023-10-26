@@ -1,0 +1,9 @@
+.action-item {
+    margin-left: .5em;
+    cursor: pointer;
+}
+
+mat-card {
+    margin-bottom: 20px;
+    border: 1px solid black;
+}

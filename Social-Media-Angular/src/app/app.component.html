@@ -3,7 +3,7 @@
  
  <p
  *ngIf="loggedIn() && loggedIn() && userHasProfile"
- >Hello, {{userDocument.publicName}}</p>
+ >Hello, {{getUserName()}}</p>
  
  <button
  *ngIf="!loggedIn()"

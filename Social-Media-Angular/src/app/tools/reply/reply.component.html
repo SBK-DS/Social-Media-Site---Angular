@@ -1,0 +1,16 @@
+<p>Reply</p>
+<div id="reply-box">
+    <div *ngFor="let comment of comments" [ngClass]="{'comment-container': true, 'creator-comment-container': isCommentCreator(comment)}">
+        <div>
+            <p class="comment-name">{{comment?.createrName}}</p>
+            <p [ngClass]="{'comment': true, 'creator-comment': isCommentCreator(comment)}">{{comment?.comment}}</p>
+        </div>
+    </div>
+</div>
+<div id="reply-action-box">
+    <button
+        (click)="onSendClick(commentInput)" 
+        mat-flat-button 
+        color="warn"><mat-icon>send</mat-icon></button>
+    <input type="text" placeholder="Comment..." #commentInput>
+</div>
