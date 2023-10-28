@@ -1,4 +1,4 @@
-import { Component, ViewChild  } from '@angular/core';
+import { Component, ViewChild, OnDestroy  } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet'
 import { AuthenticationComponent } from 'src/app/tools/authentication/authentication.component';
 import { FirebaseTSAuth } from 'firebasets/firebasetsAuth/firebaseTSAuth'
@@ -16,13 +16,14 @@ export class AppComponent {
   title = 'Social-Media-Angular';
   auth = new FirebaseTSAuth();
   firestore = new FirebaseTSFirestore()
-  userHasProfile: boolean = false
+  userHasProfile!: boolean
   private static userDocument: UserDocument | null = null
   loggedIn$ = new BehaviorSubject<boolean>(false);
+  private userProfileListener: any
 
   constructor(
     private loginSheet: MatBottomSheet,
-    private router: Router
+    private router: Router,
     ){
     this.auth.listenToSignInStateChanges(
       user => {
@@ -30,11 +31,20 @@ export class AppComponent {
           {
             whenSignedIn: user => {
               // alert('Logged In')
+              console.log('this.userProfileListener before unsubscribe : ', this.userProfileListener())
+              console.log('this.userProfileListener after unsubscribe : ', this.userProfileListener())
             },
             whenSignedOut: user => {
               // console.log('checking post feed ' + this.postFeed)
               AppComponent.userDocument = null
               this.loggedIn$.next(false)
+              this.router.navigate([""])
+              console.log('this.userProfileListener before unsubscribe : ', this.userProfileListener)
+              if(this.userProfileListener) {
+                this.userProfileListener.unsubscribe()
+              }
+              console.log('this.userProfileListener after unsubscribe : ', this.userProfileListener)
+              
             },
             
             whenSignedInAndEmailNotVerified: user => {
@@ -68,28 +78,33 @@ export class AppComponent {
     }
   }
 
-  getUserProfile() {
-
+  async getUserProfile() {
     if (this.auth !== null && this.auth.getAuth() !== null) {
       let currentUser = this.auth.getAuth().currentUser;
       if (currentUser) {
         console.log(currentUser.uid)
-        this.firestore.listenToDocument({
-          name: "Getting Document",
-          path: ["Users", currentUser.uid],
-          onUpdate: (result) => {
-            AppComponent.userDocument = <UserDocument>result.data()
-            this.userHasProfile = result.exists 
-            if(currentUser) {
-              AppComponent.userDocument.userId = currentUser.uid
-            } 
-            console.log('user profile found ? : ', this.userHasProfile)
-            if(this.userHasProfile) {
-              this.router.navigate(["postFeed"])
-            } 
-          },
-    
-        })
+        try {
+          this.userProfileListener = await this.firestore.listenToDocument({
+            name: `Getting Document for ${currentUser.uid}`,
+            path: ["Users", currentUser.uid],
+            onUpdate: (result) => {
+              AppComponent.userDocument = <UserDocument>result.data()
+              this.userHasProfile = result.exists 
+              if(currentUser) {
+                AppComponent.userDocument.userId = currentUser.uid
+              } 
+              console.log('user profile found ? : ', this.userHasProfile)
+              if(this.userHasProfile) {
+                this.router.navigate(["postFeed"])
+              } 
+            },
+
+      
+          })
+        }
+        catch (error) {
+          console.log("Error in retrieving userProfile", error)
+        }
       }}
   }
 
@@ -105,6 +120,12 @@ export class AppComponent {
     this.auth.signOut()
     // this.postFeed.getPosts()
   }
+
+  // ngOnDestroy() {
+  //   if (this.userProfileListener) {
+  //     this.userProfileListener(); // Call the unsubscribe function
+  //   }
+  // }
 
 }
 
