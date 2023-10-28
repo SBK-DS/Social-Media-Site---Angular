@@ -102,19 +102,20 @@ export class PostComponent implements OnInit {
     if (this.auth !== null && this.auth.getAuth() !== null) {
       let currentUser = this.auth.getAuth().currentUser;
       if (currentUser !== null) {
-        this.firestore.getCollection(
+        this.firestore.listenToCollection(
           {
-            path: ["Posts", this.postData.postId, "PostComments"],
-            where: [
-              
-            ],
-            onComplete: (result) => {
-              console.log('Like count : ', result)
-              this.commentCountNumber = result.size
-            }
+          name: "Post Comments",
+          path: ["Posts", this.postData.postId, "PostComments"],
+          where: [
+           
+          ],
+          onUpdate: (result) => {
+            this.commentCountNumber = result.size
           }
-        )
+        }
+        );
       }}
+
   }
 
   onLikeClickSend() {
