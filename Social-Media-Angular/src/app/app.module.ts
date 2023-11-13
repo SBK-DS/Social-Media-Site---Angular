@@ -19,7 +19,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { PostFeedComponent } from './pages/post-feed/post-feed.component';
 import { CreatePostComponent } from './tools/create-post/create-post.component';
 import { PostComponent } from './tools/post/post.component';
-import { ReplyComponent } from './tools/reply/reply.component'
+import { ReplyComponent } from './tools/reply/reply.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component'
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,8 @@ import { ReplyComponent } from './tools/reply/reply.component'
     PostFeedComponent,
     CreatePostComponent,
     PostComponent,
-    ReplyComponent
+    ReplyComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,10 @@ import { ReplyComponent } from './tools/reply/reply.component'
     MatBottomSheetModule,
     MatCardModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

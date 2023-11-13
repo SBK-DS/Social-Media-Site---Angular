@@ -1,0 +1,40 @@
+<div class="profile-page">
+    <div class="left-container">
+        <h1>Profile Details</h1>
+        <div>
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Name</mat-label>
+                  <input matInput 
+                  placeholder="Ex. Pizza" 
+                  [(ngModel)]="userName"
+                  [ngModelOptions]="{standalone: true}"
+                  [disabled]="isEdit"
+                  />
+                </mat-form-field>
+              
+                <mat-form-field class="example-full-width">
+                  <mat-label>Description</mat-label>
+                  <input 
+                  matInput 
+                  placeholder="Ex. Pizza" 
+                  [(ngModel)]="userDesc"
+                  [ngModelOptions]="{standalone: true}"
+                  [disabled]="isEdit"
+                  />
+                </mat-form-field>
+              
+                <button *ngIf="isEdit" (click)="onEditClick()">Edit</button>
+
+                <button *ngIf="!isEdit" (click)="onEditClick()">Done</button>
+
+            </form>
+              
+        </div>
+    </div>
+    <div class="right-container">
+        <h1>Your Posts</h1>
+    </div>
+</div>
+
+

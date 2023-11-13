@@ -19,3 +19,8 @@
     padding: 0px 20px 0px 20px;
     height: 35px;
 }
+
+.profile-page:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

@@ -36,14 +36,18 @@ export class AppComponent {
             },
             whenSignedOut: user => {
               // console.log('checking post feed ' + this.postFeed)
-              AppComponent.userDocument = null
               this.loggedIn$.next(false)
-              this.router.navigate([""])
-              console.log('this.userProfileListener before unsubscribe : ', this.userProfileListener)
               if(this.userProfileListener) {
                 this.userProfileListener.unsubscribe()
               }
-              console.log('this.userProfileListener after unsubscribe : ', this.userProfileListener)
+              else
+              {
+                AppComponent.userDocument = null
+                console.log('this.userProfileListener after unsubscribe : ', this.userProfileListener)
+              }
+              this.router.navigate([""])
+              console.log('this.userProfileListener before unsubscribe : ', this.userProfileListener)
+              console.log('AppComponent : ' + AppComponent.userDocument)
               
             },
             
@@ -85,12 +89,12 @@ export class AppComponent {
         console.log(currentUser.uid)
         try {
           this.userProfileListener = await this.firestore.listenToDocument({
-            name: `Getting Document for ${currentUser.uid}`,
+            name: `Getting Document for ${currentUser.uid}${new Date().toISOString()}`,
             path: ["Users", currentUser.uid],
             onUpdate: (result) => {
-              AppComponent.userDocument = <UserDocument>result.data()
-              this.userHasProfile = result.exists 
               if(currentUser) {
+                this.userHasProfile = result.exists
+                AppComponent.userDocument = <UserDocument>result.data() 
                 AppComponent.userDocument.userId = currentUser.uid
               } 
               console.log('user profile found ? : ', this.userHasProfile)
@@ -119,6 +123,11 @@ export class AppComponent {
   onLogoutClick() {
     this.auth.signOut()
     // this.postFeed.getPosts()
+  }
+
+  openProfilePage() {
+    console.log("profile page called!")
+    this.router.navigate(["profile"])
   }
 
   // ngOnDestroy() {

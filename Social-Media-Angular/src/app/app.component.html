@@ -2,7 +2,9 @@
  <p>The Connect</p>
  
  <p
+ class="profile-page"
  *ngIf="loggedIn() && loggedIn() && userHasProfile"
+ (click)="openProfilePage()"
  >Hello, {{getUserName()}}</p>
  
  <button
@@ -14,6 +16,7 @@
  *ngIf="loggedIn()"
  (click)="onLogoutClick()"
  >Logout</button>
+
 </div>
 
 

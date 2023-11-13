@@ -1,0 +1,48 @@
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+.example-full-width input {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+  .example-full-width {
+    width: 100%;
+  }
+
+  .profile-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 50px;
+    padding-left: 30px;
+    padding-right: 0;
+    width: auto;
+    height: 100%;
+    background: linear-gradient(to right, rgb(159, 159, 231), rgb(228, 180, 235));
+  }
+
+  .left-container {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(230, 229, 228);
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .right-container {
+    position: relative;
+    width: 650px;
+    height: auto;
+    background-color: rgb(230, 229, 228);
+    margin-right: 200px;
+  }
+
+  .left-container h1 {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 30px;
+  }
