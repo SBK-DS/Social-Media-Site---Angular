@@ -5,7 +5,10 @@
             <form class="example-form">
                 <mat-form-field class="example-full-width">
                   <mat-label>Name</mat-label>
-                  <input matInput 
+                  
+                  <input 
+                  #profileName
+                  matInput 
                   placeholder="Ex. Pizza" 
                   [(ngModel)]="userName"
                   [ngModelOptions]="{standalone: true}"
@@ -16,6 +19,7 @@
                 <mat-form-field class="example-full-width">
                   <mat-label>Description</mat-label>
                   <input 
+                  #profileDesc
                   matInput 
                   placeholder="Ex. Pizza" 
                   [(ngModel)]="userDesc"
@@ -24,16 +28,25 @@
                   />
                 </mat-form-field>
               
-                <button *ngIf="isEdit" (click)="onEditClick()">Edit</button>
+                <button *ngIf="isEdit" (click)="onEditClick($event, profileName, profileDesc)">Edit</button>
 
-                <button *ngIf="!isEdit" (click)="onEditClick()">Done</button>
+                <button *ngIf="!isEdit" (click)="onEditClick($event, profileName, profileDesc)">Done</button>
 
             </form>
               
         </div>
     </div>
     <div class="right-container">
+        
         <h1>Your Posts</h1>
+        
+        <p *ngIf="!isPosts">You haven't created any post</p>
+        
+        <div *ngIf="isPosts">
+            <app-post *ngFor="let post of posts" [postData]="post">    
+            </app-post>
+        </div>
+    
     </div>
 </div>
 

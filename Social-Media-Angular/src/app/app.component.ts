@@ -135,7 +135,6 @@ export class AppComponent {
   //     this.userProfileListener(); // Call the unsubscribe function
   //   }
   // }
-
 }
 
 export interface UserDocument {

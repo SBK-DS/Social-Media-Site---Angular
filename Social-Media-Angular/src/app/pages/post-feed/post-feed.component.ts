@@ -16,6 +16,7 @@ export class PostFeedComponent implements OnInit {
   auth = new FirebaseTSAuth()
   posts: PostData[] = []
   userLoggedIn: boolean = false
+  static currUserPosts: PostData[] = []
   
   constructor(
     private dailog: MatDialog,
@@ -25,6 +26,7 @@ export class PostFeedComponent implements OnInit {
       this.userLoggedIn = loggedIn;
       if (loggedIn) {
         this.getPosts();  // Call getPosts() when the user logs in
+        console.log(this.posts)
       } else {
         this.posts = [];  // Clear posts when the user logs out
       }
@@ -42,7 +44,7 @@ export class PostFeedComponent implements OnInit {
     console.log("getPosts function called")
     // console.log("app component ", this.appComponent)
     if (this.auth !== null && this.auth.getAuth() !== null) {
-      let currentUser = this.auth.getAuth().currentUser;
+      const currentUser = this.auth.getAuth().currentUser;
       if (currentUser !== null) {
         this.firestore.getCollection(
           {
@@ -62,11 +64,22 @@ export class PostFeedComponent implements OnInit {
             onFail: (err) => {
     
             }
+            
           }
         )
+        this.getCurrUserPosts()
       }
     }
   }
+
+  getCurrUserPosts() {
+    console.log(this.posts)
+    PostFeedComponent.currUserPosts = this.posts
+    console.log(PostFeedComponent.currUserPosts)
+    
+  }
+
+
 
 }
 
