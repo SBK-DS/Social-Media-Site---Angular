@@ -23,6 +23,9 @@ export class PostComponent implements OnInit {
   likeCountNumber: number = 0;
   commentCountNumber: number = 0;
   auth = new FirebaseTSAuth();
+  isCurrentUser: boolean = false
+
+
   constructor(
     private dailog: MatDialog,
     ) {}
@@ -30,9 +33,40 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.postData)
     this.getCreatorInfo()
+    this.checkCurrentUser(this.postData.createrId)
+    console.log('User created this post ? ', this.isCurrentUser)
     this.likedPost()
     this.likeCount()
     this.commentedPost()
+  }
+
+  async downloadImage() {
+    if (this.postData?.imageUrl) {
+      const imageSource = this.postData.imageUrl;
+
+      // Fetch the image as a blob
+      fetch(imageSource)
+        .then(response => response.blob())
+        .then(blob => {
+          // Create a blob URL
+          const blobUrl = URL.createObjectURL(blob);
+
+          // Create a link element
+          const link = document.createElement('a');
+          link.href = blobUrl;
+
+          // Specify the download attribute along with the desired filename
+          link.download = 'downloaded_image';
+
+          // Trigger the click event on the link to start the download
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          // Revoke the blob URL to free up resources
+          URL.revokeObjectURL(blobUrl);
+        });
+    }
   }
 
   likeCount() {
@@ -154,6 +188,17 @@ export class PostComponent implements OnInit {
       }}
       
   }
+
+  checkCurrentUser(id1: string) {
+    if (this.auth !== null && this.auth.getAuth() !== null) {
+      let currentUser = this.auth.getAuth().currentUser;
+      if (currentUser !== null) {
+        console.log(id1, currentUser.uid)
+        this.isCurrentUser = (id1 === currentUser.uid)
+      }
+    }
+  }
+
 
   getCreatorInfo() {
     this.firestore.getDocument(

@@ -1,7 +1,46 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title>{{createrName}}</mat-card-title>
-        <mat-card-subtitle>{{createrDescription}}</mat-card-subtitle>
+        <div 
+            style="
+            position: relative; 
+            width: 100%;  
+            margin: 0; 
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            
+            background-color: green;
+            "
+        >
+            <div style="width: 100%; background-color: pink;">
+                <mat-card-title>{{createrName}}</mat-card-title>
+                <mat-card-subtitle>{{createrDescription}}</mat-card-subtitle>
+            </div>
+    
+            <div *ngIf="isCurrentUser" 
+                style="
+                    position: relative;
+                    display: flex; 
+                    justify-content: end;
+                    width: 100%;
+                    background-color: blue;
+                    ">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+            </div>
+            <div>
+                <mat-menu 
+                    #menu="matMenu"
+                    style="position: absolute;"
+                >
+                    <button mat-menu-item >Item 1</button>
+                    <button mat-menu-item >Item 2</button>
+                    <!-- Add more menu items as needed -->
+                </mat-menu>
+            </div>
+
+        </div>
     </mat-card-header>
     <img mat-card-image *ngIf="postData?.imageUrl" src="{{postData.imageUrl}}" alt="">
     <mat-card-content *ngIf="postData?.comment">
@@ -13,6 +52,6 @@
         <mat-icon *ngIf="!isLiked" (click)="onLikeClick()" class="action-item" color="warn">favorite_border</mat-icon>
         <mat-icon *ngIf="isLiked" (click)="onLikeClick()" class="action-item" color="warn">favorite_filled</mat-icon> 
         <span>{{likeCountNumber}}</span>
-        <mat-icon class="action-item" color="warn">save</mat-icon>
+        <mat-icon class="action-item" color="warn" (click)="downloadImage()">save</mat-icon>
     </mat-card-actions>
 </mat-card>
